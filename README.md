@@ -2,7 +2,7 @@
 
 Run in docker:
 ``` bash
-sudo GIT_REPO_URL=https://github.com/user/repo.git docker-compose up
+sudo GIT_REPO_URL=https://github.com/user/repo.git docker compose up
 ```
 
 
