@@ -2,10 +2,10 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// Read the git URL from command line arguments
-const repoUrl = process.argv[2]; // First argument is the URL
+// Read the git URL from environment variable
+const repoUrl = process.env.GIT_REPO_URL;
 if (!repoUrl) {
-    console.error('Usage: node script.js <repository-url>');
+    console.error('Error: GIT_REPO_URL environment variable not set');
     process.exit(1);
 }
 
