@@ -96,7 +96,7 @@ async function main() {
     // Output the largest files
     console.log('Largest files across all repositories:');
     let table = [];
-    allFileSizes.slice(0, 10).forEach(({ file, size, repoUrl }, index) => {
+    allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl }, index) => {
         const sizeInMB = (size / (1024 * 1024)).toFixed(2);
         const extension = path.extname(file).slice(1).toUpperCase();
         const fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/main/${file}`;
