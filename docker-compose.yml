@@ -9,3 +9,4 @@ services:
     command: bash -c "npm install && node index.js"
     environment:
       - GIT_REPO_URL=${GIT_REPO_URL}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
