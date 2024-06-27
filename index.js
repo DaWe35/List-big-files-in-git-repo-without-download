@@ -135,12 +135,18 @@ async function main() {
     allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl, defaultBranch }, index) => {
         const sizeInMB = (size / (1024 * 1024)).toFixed(2);
         const extension = path.extname(file).slice(1).toUpperCase();
-        const fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/${defaultBranch}/${file}`;
-        const containsKeyword = keywords.some(keyword => fileUrl.includes(keyword));
+        let fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/${defaultBranch}/${file}`;
+
+        // Highlight keywords
+        keywords.forEach(keyword => {
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            fileUrl = fileUrl.replace(regex, '\x1b[33m$1\x1b[0m'); // Highlight keyword in yellow
+        });
+
         table.push({
             Ext: extension,
             Size: sizeInMB + ' MB',
-            URL: containsKeyword ? `\x1b[33m${fileUrl}\x1b[0m` : fileUrl // Highlight URLs containing keywords in yellow
+            URL: fileUrl
         });
     });
     console.table(table);
