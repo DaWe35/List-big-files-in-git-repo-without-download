@@ -34,6 +34,9 @@ const exclusions = [
     '.jpg',
     '.jpeg',
     '.png',
+    '.gif',
+    '.otf',
+    '.ipynb',
     '.yaml',
 ];
 
