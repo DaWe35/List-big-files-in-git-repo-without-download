@@ -60,15 +60,18 @@ function analyzeRepo(repoUrl) {
         // Change directory to the cloned repository
         process.chdir(cloneDir);
 
+        // Determine the default branch
+        const defaultBranch = execSync('git symbolic-ref refs/remotes/origin/HEAD', { encoding: 'utf-8' }).trim().split('/').pop();
+
         // List files and their sizes
         console.log('Listing files and their sizes...');
-        const files = execSync('git ls-tree -r HEAD --name-only', { encoding: 'utf-8' }).trim().split('\n');
+        const files = execSync(`git ls-tree -r ${defaultBranch} --name-only`, { encoding: 'utf-8' }).trim().split('\n');
 
         // Filter out excluded files
         const filteredFiles = files.filter(file => !exclusions.some(exclusion => file.includes(exclusion)));
 
         const fileSizes = filteredFiles.map(file => {
-            const size = execSync(`git cat-file -s "HEAD:${file}"`, { encoding: 'utf-8' }).trim();
+            const size = execSync(`git cat-file -s "${defaultBranch}:${file}"`, { encoding: 'utf-8' }).trim();
             return { file, size: parseInt(size, 10), repoUrl };
         });
 
@@ -120,8 +123,8 @@ async function main() {
     allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl }, index) => {
         const sizeInMB = (size / (1024 * 1024)).toFixed(2);
         const extension = path.extname(file).slice(1).toUpperCase();
-        const fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/main/${file}`;
-        table.push({ Ext: extension, Size: sizeInMB + ' MB', File: file, URL: fileUrl });
+        const fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/${defaultBranch}/${file}`;
+        table.push({ Ext: extension, Size: sizeInMB + ' MB', URL: fileUrl });
     });
     console.table(table);
 }
