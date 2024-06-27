@@ -27,6 +27,7 @@ const exclusions = [
     '.prettierrc',
     '.eslintrc',
     'pnpm-lock.yaml',
+    '.yaml/',
     'README.md',
     'LICENSE',
     'CHANGELOG.md',
@@ -36,6 +37,7 @@ const exclusions = [
     '.png',
     '.gif',
     '.otf',
+    '.ttf',
     '.ipynb',
     '.yaml',
 ];
