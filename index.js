@@ -131,7 +131,7 @@ async function main() {
     // Output the largest files
     console.log('Largest files across all repositories:');
     let table = [];
-    const keywords = ["airdrop", "merkle", "distribution"];
+    const keywords = ["airdrop", "merkle", "distribution", ".csv", ".json"];
 
     // Inside the main function
     allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl, defaultBranch }, index) => {
@@ -153,13 +153,12 @@ async function main() {
     });
 
     // At the end of the main function, change the console.table to console.log for URLs
-    console.log(table.map(row => ({
+    table.map(row => ({
         ...row,
         URL: row.URL.replace(/\x1b\[33m|\x1b\[0m/g, '') // Remove ANSI codes for table display
-    })));
+    }));
 
-    console.log('Highlighted URLs:');
-    table.forEach(row => console.log(row.URL));
+    table.forEach(row => console.log(row.Size, row.URL));
 }
 
 main().catch(error => {
