@@ -129,11 +129,17 @@ async function main() {
     // Output the largest files
     console.log('Largest files across all repositories:');
     let table = [];
+    const keywords = ["airdrop", "merkle", "distribution"];
     allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl, defaultBranch }, index) => {
         const sizeInMB = (size / (1024 * 1024)).toFixed(2);
         const extension = path.extname(file).slice(1).toUpperCase();
         const fileUrl = `${repoUrl.replace(/\.git$/, '')}/blob/${defaultBranch}/${file}`;
-        table.push({ Ext: extension, Size: sizeInMB + ' MB', URL: fileUrl });
+        const containsKeyword = keywords.some(keyword => fileUrl.includes(keyword));
+        table.push({
+            Ext: extension,
+            Size: sizeInMB + ' MB',
+            URL: containsKeyword ? `\x1b[33m${fileUrl}\x1b[0m` : fileUrl // Highlight URLs containing keywords in yellow
+        });
     });
     console.table(table);
 }
