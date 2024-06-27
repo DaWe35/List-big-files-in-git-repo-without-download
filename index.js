@@ -132,6 +132,8 @@ async function main() {
     console.log('Largest files across all repositories:');
     let table = [];
     const keywords = ["airdrop", "merkle", "distribution"];
+
+    // Inside the main function
     allFileSizes.slice(0, 25).forEach(({ file, size, repoUrl, defaultBranch }, index) => {
         const sizeInMB = (size / (1024 * 1024)).toFixed(2);
         const extension = path.extname(file).slice(1).toUpperCase();
@@ -140,7 +142,7 @@ async function main() {
         // Highlight keywords
         keywords.forEach(keyword => {
             const regex = new RegExp(`(${keyword})`, 'gi');
-            fileUrl = fileUrl.replace(regex, '\x1b[33m$1\x1b[0m'); // Highlight keyword in yellow
+            fileUrl = fileUrl.replace(regex, (match) => `\x1b[33m${match}\x1b[0m`); // Highlight keyword in yellow
         });
 
         table.push({
@@ -149,7 +151,15 @@ async function main() {
             URL: fileUrl
         });
     });
-    console.table(table);
+
+    // At the end of the main function, change the console.table to console.log for URLs
+    console.log(table.map(row => ({
+        ...row,
+        URL: row.URL.replace(/\x1b\[33m|\x1b\[0m/g, '') // Remove ANSI codes for table display
+    })));
+
+    console.log('Highlighted URLs:');
+    table.forEach(row => console.log(row.URL));
 }
 
 main().catch(error => {
