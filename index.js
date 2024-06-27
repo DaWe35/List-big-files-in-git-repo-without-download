@@ -13,6 +13,24 @@ if (!repoUrl) {
     process.exit(1);
 }
 
+// Define a list of common files/directories to exclude
+const exclusions = [
+    'node_modules/',
+    'tests/',
+    'package.json',
+    'package-lock.json',
+    '.gitignore',
+    '.git',
+    'yarn.lock',
+    '.npmrc',
+    '.editorconfig',
+    '.prettierrc',
+    '.eslintrc',
+    'README.md',
+    'LICENSE',
+    'CHANGELOG.md'
+];
+
 async function getRepos(url) {
     let repos = [];
     const usernameOrOrg = url.split('/').pop();
@@ -46,7 +64,10 @@ function analyzeRepo(repoUrl) {
         console.log('Listing files and their sizes...');
         const files = execSync('git ls-tree -r HEAD --name-only', { encoding: 'utf-8' }).trim().split('\n');
 
-        const fileSizes = files.map(file => {
+        // Filter out excluded files
+        const filteredFiles = files.filter(file => !exclusions.some(exclusion => file.includes(exclusion)));
+
+        const fileSizes = filteredFiles.map(file => {
             const size = execSync(`git cat-file -s "HEAD:${file}"`, { encoding: 'utf-8' }).trim();
             return { file, size: parseInt(size, 10), repoUrl };
         });
