@@ -27,6 +27,7 @@ const exclusions = [
     '.prettierrc',
     '.eslintrc',
     'pnpm-lock.yaml',
+    '.yaml/',
 ];
 
 async function getRepos(url) {
