@@ -27,17 +27,6 @@ const exclusions = [
     '.prettierrc',
     '.eslintrc',
     'pnpm-lock.yaml',
-    'README.md',
-    'LICENSE',
-    'CHANGELOG.md',
-    '.svg',
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.gif',
-    '.otf',
-    '.ipynb',
-    '.yaml',
 ];
 
 async function getRepos(url) {
